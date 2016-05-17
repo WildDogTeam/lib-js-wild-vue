@@ -9,6 +9,8 @@ var demoWilddogUrl = 'https://test123.wilddogio.com'
 
 describe('WildVue', function () {
   var wilddogRef
+  //network can be very slow
+  this.timeout(0);
 
   beforeEach(function (done) {
     wilddogRef = new Wilddog(demoWilddogUrl)
