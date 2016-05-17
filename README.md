@@ -13,7 +13,7 @@
     <!-- Wilddog -->
     <script src="https://cdn.wilddog.com/sdk/js/current/wilddog.js"></script>
     <!-- WildVue -->
-    <script src="https://cdn.jsdelivr.net/wildvue/1.0.0/wildvue.min.js"></script>
+    <script src="https://cdn.wilddog.com/wildvue/1.0.1/wildvue.min.js"></script>
   </head>
   ```
 
