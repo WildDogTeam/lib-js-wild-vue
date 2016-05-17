@@ -13,7 +13,7 @@ module.exports = function (config) {
     },
     client: {
       mocha: {
-        timeout: 10000
+        timeout: 100000
       }
     },
     webpack: {
