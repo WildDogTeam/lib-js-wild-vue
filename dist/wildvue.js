@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["VueFire"] = factory();
+		exports["WildVue"] = factory();
 	else
-		root["VueFire"] = factory();
+		root["WildVue"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -67,9 +67,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Convert firebase snapshot into a bindable data record.
+	 * Convert wilddog snapshot into a bindable data record.
 	 *
-	 * @param {FirebaseSnapshot} snapshot
+	 * @param {WilddogSnapshot} snapshot
 	 * @return {Object}
 	 */
 	function createRecord (snapshot) {
@@ -99,7 +99,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Bind a firebase data source to a key on a vm.
+	 * Bind a wilddog data source to a key on a vm.
 	 *
 	 * @param {Vue} vm
 	 * @param {string} key
@@ -115,15 +115,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    source = source.source
 	  }
 	  if (!isObject(source)) {
-	    throw new Error('VueFire: invalid Firebase binding source.')
+	    throw new Error('WildVue: invalid Wilddog binding source.')
 	  }
 	  // get the original ref for possible queries
 	  var ref = source
 	  if (typeof source.ref === 'function') {
 	    ref = source.ref()
 	  }
-	  vm.$firebaseRefs[key] = ref
-	  vm._firebaseSources[key] = source
+	  vm.$wilddogRefs[key] = ref
+	  vm._wilddogSources[key] = source
 	  // bind based on initial value type
 	  if (asObject) {
 	    bindAsObject(vm, key, source, cancelCallback)
@@ -133,7 +133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Bind a firebase data source to a key on a vm as an Array.
+	 * Bind a wilddog data source to a key on a vm as an Array.
 	 *
 	 * @param {Vue} vm
 	 * @param {string} key
@@ -166,7 +166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    array.splice(newIndex, 0, record)
 	  }, cancelCallback)
 
-	  vm._firebaseListeners[key] = {
+	  vm._wilddogListeners[key] = {
 	    child_added: onAdd,
 	    child_removed: onRemove,
 	    child_changed: onChange,
@@ -175,7 +175,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Bind a firebase data source to a key on a vm as an Object.
+	 * Bind a wilddog data source to a key on a vm as an Object.
 	 *
 	 * @param {Vue} vm
 	 * @param {string} key
@@ -187,31 +187,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var cb = source.on('value', function (snapshot) {
 	    vm[key] = createRecord(snapshot)
 	  }, cancelCallback)
-	  vm._firebaseListeners[key] = { value: cb }
+	  vm._wilddogListeners[key] = { value: cb }
 	}
 
 	/**
-	 * Unbind a firebase-bound key from a vm.
+	 * Unbind a wilddog-bound key from a vm.
 	 *
 	 * @param {Vue} vm
 	 * @param {string} key
 	 */
 	function unbind (vm, key) {
-	  var source = vm._firebaseSources && vm._firebaseSources[key]
+	  var source = vm._wilddogSources && vm._wilddogSources[key]
 	  if (!source) {
 	    throw new Error(
-	      'VueFire: unbind failed: "' + key + '" is not bound to ' +
-	      'a Firebase reference.'
+	      'WildVue: unbind failed: "' + key + '" is not bound to ' +
+	      'a Wilddog reference.'
 	    )
 	  }
-	  var listeners = vm._firebaseListeners[key]
+	  var listeners = vm._wilddogListeners[key]
 	  for (var event in listeners) {
 	    source.off(event, listeners[event])
 	  }
 	  vm[key] = null
-	  vm.$firebaseRefs[key] = null
-	  vm._firebaseSources[key] = null
-	  vm._firebaseListeners[key] = null
+	  vm.$wilddogRefs[key] = null
+	  vm._wilddogSources[key] = null
+	  vm._wilddogListeners[key] = null
 	}
 
 	/**
@@ -220,16 +220,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {Vue} vm
 	 */
 	function ensureRefs (vm) {
-	  if (!vm.$firebaseRefs) {
-	    vm.$firebaseRefs = Object.create(null)
-	    vm._firebaseSources = Object.create(null)
-	    vm._firebaseListeners = Object.create(null)
+	  if (!vm.$wilddogRefs) {
+	    vm.$wilddogRefs = Object.create(null)
+	    vm._wilddogSources = Object.create(null)
+	    vm._wilddogListeners = Object.create(null)
 	  }
 	}
 
-	var VueFireMixin = {
+	var WildVueMixin = {
 	  init: function () {
-	    var bindings = this.$options.firebase
+	    var bindings = this.$options.wilddog
 	    if (!bindings) return
 	    ensureRefs(this)
 	    for (var key in bindings) {
@@ -237,15 +237,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  beforeDestroy: function () {
-	    if (!this.$firebaseRefs) return
-	    for (var key in this.$firebaseRefs) {
-	      if (this.$firebaseRefs[key]) {
+	    if (!this.$wilddogRefs) return
+	    for (var key in this.$wilddogRefs) {
+	      if (this.$wilddogRefs[key]) {
 	        this.$unbind(key)
 	      }
 	    }
-	    this.$firebaseRefs = null
-	    this._firebaseSources = null
-	    this._firebaseListeners = null
+	    this.$wilddogRefs = null
+	    this._wilddogSources = null
+	    this._wilddogListeners = null
 	  }
 	}
 
@@ -256,11 +256,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function install (_Vue) {
 	  Vue = _Vue
-	  Vue.mixin(VueFireMixin)
+	  Vue.mixin(WildVueMixin)
 
 	  // use object-based merge strategy
 	  var mergeStrats = Vue.config.optionMergeStrategies
-	  mergeStrats.firebase = mergeStrats.methods
+	  mergeStrats.wilddog = mergeStrats.methods
 
 	  // extend instance methods
 	  Vue.prototype.$bindAsObject = function (key, source, cancelCallback) {

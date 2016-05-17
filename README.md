@@ -1,6 +1,6 @@
-# VueFire [![Build Status](https://img.shields.io/circleci/project/vuejs/vuefire.svg)](https://circleci.com/gh/vuejs/vuefire) [![npm package](https://img.shields.io/npm/v/vuefire.svg)](https://www.npmjs.com/package/vuefire) [![coverage](https://img.shields.io/codecov/c/github/vuejs/vuefire.svg)](https://codecov.io/github/vuejs/vuefire)
+# WildVue [![CircleCI](https://circleci.com/gh/WildDogTeam/lib-js-wild-vue.svg?style=svg)](https://circleci.com/gh/WildDogTeam/lib-js-wild-vue) [![npm package](https://img.shields.io/npm/v/wildvue.svg)](https://www.npmjs.com/package/wildvue) [![coverage](https://img.shields.io/codecov/c/github/vuejs/wildvue.svg)](https://codecov.io/github/vuejs/wildvue)
 
-> Vue.js binding for Firebase.
+> Vue.js binding for Wilddog.
 
 ## Installation
 
@@ -10,26 +10,26 @@
   <head>
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
-    <!-- Firebase -->
-    <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
-    <!-- VueFire -->
-    <script src="https://cdn.jsdelivr.net/vuefire/1.0.0/vuefire.min.js"></script>
+    <!-- Wilddog -->
+    <script src="https://cdn.wilddog.com/sdk/js/current/wilddog.js"></script>
+    <!-- WildVue -->
+    <script src="https://cdn.jsdelivr.net/wildvue/1.0.0/wildvue.min.js"></script>
   </head>
   ```
 
 2. In module environments, e.g CommonJS:
 
   ``` bash
-  npm install vue firebase vuefire --save
+  npm install vue wilddog wildvue --save
   ```
 
   ``` js
   var Vue = require('vue')
-  var VueFire = require('vuefire')
-  var Firebase = require('firebase')
+  var WildVue = require('wildvue')
+  var Wilddog = require('wilddog')
 
   // explicit installation required in module environments
-  Vue.use(VueFire)
+  Vue.use(WildVue)
   ```
 
 ## Usage
@@ -37,14 +37,14 @@
 ``` js
 var vm = new Vue({
   el: '#demo',
-  firebase: {
+  wilddog: {
     // simple syntax, bind as an array by default
-    anArray: new Firebase('url/to/my/collection'),
+    anArray: new Wilddog('url/to/my/collection'),
     // can also bind to a query
-    // anArray: new Firebase('url/to/my/collection').limitToLast(25)
+    // anArray: new Wilddog('url/to/my/collection').limitToLast(25)
     // full syntax
     anObject: {
-      source: new Firebase('url/to/my/object'),
+      source: new Wilddog('url/to/my/object'),
       // optionally bind as an object
       asObject: true,
       // optionally provide the cancelCallback
@@ -63,20 +63,20 @@ var vm = new Vue({
 </div>
 ```
 
-The above will bind the Vue instance's `anObject` and `anArray` to the respective Firebase data sources. In addition, the instance also gets the `$firebaseRefs` property, which holds the refs for each binding:
+The above will bind the Vue instance's `anObject` and `anArray` to the respective Wilddog data sources. In addition, the instance also gets the `$wilddogRefs` property, which holds the refs for each binding:
 
 ``` js
 // add an item to the array
-vm.$firebaseRefs.anArray.push({
+vm.$wilddogRefs.anArray.push({
   text: 'hello'
 })
 ```
 
-Alternatively, you can also manually bind to a Firebase ref with the `$bindAsObject` or `$bindAsArray` instance methods:
+Alternatively, you can also manually bind to a Wilddog ref with the `$bindAsObject` or `$bindAsArray` instance methods:
 
 ``` js
-vm.$bindAsObject('user', myFirebaseRef.child('user'))
-vm.$bindAsArray('items', myFirebaseRef.child('items').limitToLast(25))
+vm.$bindAsObject('user', myWilddogRef.child('user'))
+vm.$bindAsArray('items', myWilddogRef.child('items').limitToLast(25))
 ```
 
 ## Data Normalization
@@ -127,6 +127,6 @@ Clone the repo, then:
 ```bash
 $ npm install    # install dependencies
 $ npm test       # run test suite with coverage report
-$ npm run dev    # watch and build dist/vuefire.js
-$ npm run build  # build dist/vuefire.js and vuefire.min.js
+$ npm run dev    # watch and build dist/wildvue.js
+$ npm run build  # build dist/wildvue.js and wildvue.min.js
 ```
