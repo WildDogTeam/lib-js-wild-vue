@@ -16,6 +16,7 @@ module.exports = function (config) {
         timeout: 100000
       }
     },
+    browserNoActivityTimeout: 100000,
     webpack: {
       devtool: '#inline-source-map',
       module: {
