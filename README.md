@@ -1,10 +1,10 @@
 # WildVue [![CircleCI](https://circleci.com/gh/WildDogTeam/lib-js-wild-vue.svg?style=svg)](https://circleci.com/gh/WildDogTeam/lib-js-wild-vue) [![npm package](https://img.shields.io/npm/v/wildvue.svg)](https://www.npmjs.com/package/wildvue) [![coverage](https://img.shields.io/codecov/c/github/vuejs/wildvue.svg)](https://codecov.io/github/vuejs/wildvue)
 
-> Vue.js binding for Wilddog.
+Vue.js 与野狗的绑定插件
 
-## Installation
+## 安装
 
-1. If included as global `<script>`: will install automatically if global `Vue` is present.
+1. 如果使用`<script>` 全局引入： 如果`Vue` 存在会自动安装。
 
   ``` html
   <head>
@@ -17,7 +17,7 @@
   </head>
   ```
 
-2. In module environments, e.g CommonJS:
+2. 在模块化环境中，比如CommonJS
 
   ``` bash
   npm install vue wilddog wildvue --save
@@ -27,27 +27,27 @@
   var Vue = require('vue')
   var WildVue = require('wildvue')
   var Wilddog = require('wilddog')
-
-  // explicit installation required in module environments
+  // 在模块化环境中需要使用 user 安装
   Vue.use(WildVue)
   ```
 
-## Usage
+## 使用
 
 ``` js
 var vm = new Vue({
   el: '#demo',
   wilddog: {
-    // simple syntax, bind as an array by default
+    //简单语法
+    //默认作为数组绑定
     anArray: new Wilddog('url/to/my/collection'),
-    // can also bind to a query
+    // 也可以绑定一个查询
     // anArray: new Wilddog('url/to/my/collection').limitToLast(25)
-    // full syntax
+    // 完整语法
     anObject: {
       source: new Wilddog('url/to/my/object'),
-      // optionally bind as an object
+      // 可选，作为对象绑定
       asObject: true,
-      // optionally provide the cancelCallback
+      // 可选，提供一个回调
       cancelCallback: function () {}
     }
   }
@@ -63,7 +63,7 @@ var vm = new Vue({
 </div>
 ```
 
-The above will bind the Vue instance's `anObject` and `anArray` to the respective Wilddog data sources. In addition, the instance also gets the `$wilddogRefs` property, which holds the refs for each binding:
+上面的例子会绑定一个Vue实例的`anObject` 和 `anArray` 到相应的 Wilddog 数据源。另外，Vue实例也可以使用 `$wilddogRefs` property：
 
 ``` js
 // add an item to the array
@@ -72,20 +72,19 @@ vm.$wilddogRefs.anArray.push({
 })
 ```
 
-Alternatively, you can also manually bind to a Wilddog ref with the `$bindAsObject` or `$bindAsArray` instance methods:
+另外，你也可以使用 `$bindAsObject` 或 `$bindAsArray` 方法绑定一个Wildog ref：
 
 ``` js
 vm.$bindAsObject('user', myWilddogRef.child('user'))
 vm.$bindAsArray('items', myWilddogRef.child('items').limitToLast(25))
 ```
 
-## Data Normalization
+## 数据归一化
 
-### Array Bindings
+### 数组绑定
 
-Each record in the bound array will contain a `.key` property which specifies the key where the record is stored. So if you have data at `/items/-Jtjl482BaXBCI7brMT8/`, the record for that data will have a `.key` of `"-Jtjl482BaXBCI7brMT8"`.
-
-If an individual record's value in the database is a primitive (boolean, string, or number), the value will be stored in the `.value` property. If the individual record's value is an object, each of the object's properties will be stored as properties of the bound record. As an example, let's assume the `/items/` node you bind to contains the following data:
+在绑定数组中的每一条记录中都会包含一个 `.key` property,用来表示这条记录的key。 所以，如果你有书记在 `/items/-Jtjl482BaXBCI7brMT8/` ， 这条记录会存在一个 `.key:"-Jtjl482BaXBCI7brMT8"`。
+如果value是简单数据类型（boolean,string,number）会保存在`.value` property 中。如果value 是对象，value对象中每个property 都会直接存放在记录中：
 
 ``` json
 {
@@ -120,7 +119,7 @@ The resulting bound array stored in `vm.items` will be:
 ]
 ```
 
-## Contributing
+## 贡献
 
 Clone the repo, then:
 
