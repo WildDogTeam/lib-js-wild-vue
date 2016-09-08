@@ -13,7 +13,7 @@ Vue.js 与野狗的绑定插件
     <!-- Wilddog -->
     <script src="https://cdn.wilddog.com/sdk/js/2.0.0/wilddog.js"></script>
     <!-- WildVue -->
-    <script src="https://cdn.wilddog.com/libs/wild-vue/1.0.26/wildvue.min.js"></script>
+    <script src="https://cdn.wilddog.com/libs/wild-vue/1.1.0/wildvue.min.js"></script>
   </head>
   ```
 
