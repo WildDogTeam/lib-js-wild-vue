@@ -1,18 +1,22 @@
 var Vue = require('vue')
-var Wilddog = require('wilddog')
+var wilddog = require('wilddog')
 var WildVue = require('../src/wildvue')
 var helpers = require('./helpers')
 
 Vue.use(WildVue)
 
-var demoWilddogUrl = 'https://test123.wilddogio.com'
+var wilddogApp = wilddog.initializeApp({
+  authDomain: 'test123.wilddog.com',
+  syncURL: 'https://test123.wilddogio.com'
+})
+var sync = wilddogApp.sync()
 
 describe('WildVue', function () {
   var wilddogRef
   // network can be very slow
   this.timeout(0)
   beforeEach(function (done) {
-    wilddogRef = new Wilddog(demoWilddogUrl)
+    wilddogRef = sync
     wilddogRef.remove(function (error) {
       if (error && error.code !== 'OP_REPEAT') {
         done(error)

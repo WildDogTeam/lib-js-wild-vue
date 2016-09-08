@@ -11,9 +11,9 @@ Vue.js 与野狗的绑定插件
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
     <!-- Wilddog -->
-    <script src="https://cdn.wilddog.com/sdk/js/current/wilddog.js"></script>
+    <script src="https://cdn.wilddog.com/sdk/js/2.0.0/wilddog.js"></script>
     <!-- WildVue -->
-    <script src="https://cdn.wilddog.com/libs/wild-vue/1.0.4/wildvue.min.js"></script>
+    <script src="https://cdn.wilddog.com/libs/wild-vue/1.0.26/wildvue.min.js"></script>
   </head>
   ```
 
@@ -26,7 +26,7 @@ Vue.js 与野狗的绑定插件
   ``` js
   var Vue = require('vue')
   var WildVue = require('wildvue')
-  var Wilddog = require('wilddog')
+  var wilddog = require('wilddog')
   // 在模块化环境中需要使用 user 安装
   Vue.use(WildVue)
   ```
@@ -34,14 +34,16 @@ Vue.js 与野狗的绑定插件
 ## 使用
 
 ``` js
+var wilddogApp = wilddog.initializeApp({ ... })
+var sync = wilddogApp.sync()
 var vm = new Vue({
   el: '#demo',
   wilddog: {
     //简单语法
     //默认作为数组绑定
-    anArray: new Wilddog('url/to/my/collection'),
+    anArray: sync.ref('url/to/my/collection'),
     // 也可以绑定一个查询
-    // anArray: new Wilddog('url/to/my/collection').limitToLast(25)
+    // anArray: sync.ref('url/to/my/collection').limitToLast(25)
     // 完整语法
     anObject: {
       source: new Wilddog('url/to/my/object'),
@@ -129,3 +131,6 @@ $ npm test       # run test suite with coverage report
 $ npm run dev    # watch and build dist/wildvue.js
 $ npm run build  # build dist/wildvue.js and wildvue.min.js
 ```
+## License
+
+[MIT](http://opensource.org/licenses/MIT)

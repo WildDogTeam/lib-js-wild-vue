@@ -1,6 +1,6 @@
 {
   "name": "wildvue",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Wilddog bindings for Vue.js",
   "main": "dist/wildvue.js",
   "files": [
@@ -37,10 +37,9 @@
     "codecov": "^1.0.1",
     "eslint": "^2.5.1",
     "eslint-config-standard": "^5.1.0",
-    "eslint-plugin-html": "^1.4.0",
+    "eslint-plugin-html": "^1.5.2",
     "eslint-plugin-promise": "^1.1.0",
     "eslint-plugin-standard": "^1.3.2",
-    "wilddog": "^0.6.2",
     "istanbul-instrumenter-loader": "^0.2.0",
     "karma": "^0.13.22",
     "karma-coverage": "^0.5.5",
@@ -49,13 +48,14 @@
     "karma-sinon-chai": "^1.2.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.24",
-    "karma-webpack": "^1.7.0",
+    "karma-webpack": "^1.8.0",
     "lolex": "^1.4.0",
     "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.3",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
     "vue": "^1.0.19",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.14",
+    "wilddog": "2.0.3"
   }
 }

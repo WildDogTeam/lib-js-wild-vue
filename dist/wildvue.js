@@ -57,6 +57,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Vue // late binding
 
 	/**
+	 * Returns the key of a Wilddog snapshot across SDK versions.
+	 *
+	 * @param {WilddogSnapshot} snapshot
+	 * @return {string|null}
+	 */
+	function _getKey (snapshot) {
+	  return typeof snapshot.key === 'function'
+	    ? snapshot.key()
+	    : snapshot.key
+	}
+
+	/**
+	 * Returns the original reference of a Wilddog reference or query across SDK versions.
+	 *
+	 * @param {WilddogReference|WilddogQuery} refOrQuery
+	 * @return {WilddogReference}
+	 */
+	function _getRef (refOrQuery) {
+	  if (typeof refOrQuery.ref === 'function') {
+	    refOrQuery = refOrQuery.ref()
+	  } else if (typeof refOrQuery.ref === 'object') {
+	    refOrQuery = refOrQuery.ref
+	  }
+
+	  return refOrQuery
+	}
+
+	/**
 	 * Check if a value is an object.
 	 *
 	 * @param {*} val
@@ -77,7 +105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var res = isObject(value)
 	    ? value
 	    : { '.value': value }
-	  res['.key'] = snapshot.key()
+	  res['.key'] = _getKey(snapshot);
 	  return res
 	}
 
@@ -118,10 +146,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('WildVue: invalid Wilddog binding source.')
 	  }
 	  // get the original ref for possible queries
-	  var ref = source
-	  if (typeof source.ref === 'function') {
-	    ref = source.ref()
-	  }
+	  var ref = _getRef(source)
 	  vm.$wilddogRefs[key] = ref
 	  vm._wilddogSources[key] = source
 	  // bind based on initial value type
@@ -129,6 +154,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    bindAsObject(vm, key, source, cancelCallback)
 	  } else {
 	    bindAsArray(vm, key, source, cancelCallback)
+	  }
+	}
+
+	/**
+	 * Define a reactive property in a given vm if it's not defined
+	 * yet
+	 *
+	 * @param {Vue} vm
+	 * @param {string} key
+	 * @param {*} val
+	 */
+	function defineReactive (vm, key, val) {
+	  if (key in vm) {
+	    vm[key] = val
+	  } else {
+	    Vue.util.defineReactive(vm, key, val)
 	  }
 	}
 
@@ -142,7 +183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	function bindAsArray (vm, key, source, cancelCallback) {
 	  var array = []
-	  Vue.util.defineReactive(vm, key, array)
+	  defineReactive(vm, key, array)
 
 	  var onAdd = source.on('child_added', function (snapshot, prevKey) {
 	    var index = prevKey ? indexForKey(array, prevKey) + 1 : 0
@@ -150,17 +191,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, cancelCallback)
 
 	  var onRemove = source.on('child_removed', function (snapshot) {
-	    var index = indexForKey(array, snapshot.key())
+	    var index = indexForKey(array, _getKey(snapshot))
 	    array.splice(index, 1)
 	  }, cancelCallback)
 
 	  var onChange = source.on('child_changed', function (snapshot) {
-	    var index = indexForKey(array, snapshot.key())
+	    var index = indexForKey(array, _getKey(snapshot))
 	    array.splice(index, 1, createRecord(snapshot))
 	  }, cancelCallback)
 
 	  var onMove = source.on('child_moved', function (snapshot, prevKey) {
-	    var index = indexForKey(array, snapshot.key())
+	    var index = indexForKey(array, _getKey(snapshot))
 	    var record = array.splice(index, 1)[0]
 	    var newIndex = prevKey ? indexForKey(array, prevKey) + 1 : 0
 	    array.splice(newIndex, 0, record)
@@ -183,7 +224,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {function|null} cancelCallback
 	 */
 	function bindAsObject (vm, key, source, cancelCallback) {
-	  Vue.util.defineReactive(vm, key, {})
+	  defineReactive(vm, key, {})
 	  var cb = source.on('value', function (snapshot) {
 	    vm[key] = createRecord(snapshot)
 	  }, cancelCallback)
@@ -227,15 +268,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 
+	var init = function () {
+	  var bindings = this.$options.wilddog
+	  if (!bindings) return
+	  ensureRefs(this)
+	  for (var key in bindings) {
+	    bind(this, key, bindings[key])
+	  }
+	}
+
 	var WildVueMixin = {
-	  init: function () {
-	    var bindings = this.$options.wilddog
-	    if (!bindings) return
-	    ensureRefs(this)
-	    for (var key in bindings) {
-	      bind(this, key, bindings[key])
-	    }
-	  },
+	  init: init, // 1.x
+	  beforeCreate: init, // 2.x
 	  beforeDestroy: function () {
 	    if (!this.$wilddogRefs) return
 	    for (var key in this.$wilddogRefs) {
