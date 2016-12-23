@@ -1,6 +1,6 @@
 {
   "name": "wildvue",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Wilddog bindings for Vue.js",
   "main": "dist/wildvue.js",
   "files": [
